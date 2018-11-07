@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Socket Games</title>
+		<link rel='stylesheet' href='/stylesheets/client.css' />
+
+	</head>
+	<body>
+		<input id="m" type='text'>
+		<button onClick="javascript:send()">Fire!</button>
+		<script src='/socket.io/socket.io.js'></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+		<script>
+		var socket = io();
+		socket.on('connect', function(){
+			console.log('connesso');
+		});
+		socket.on('disconnect', function(){
+			console.log('disconnesso');
+		});
+		socket.on('troppe_conn', function(){
+			console.log('troppe connessioni');
+		});
+		var send = function(){
+			socket.emit('unisciti', $('#m').val());
+		};
+		</script>
+	</body>
+</html>

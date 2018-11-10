@@ -2,16 +2,15 @@
 <html>
 	<head>
 		<title>Socket Games</title>
+		<link rel='stylesheet' href='/stylesheets/style.css' />
 		<link rel='stylesheet' href='/stylesheets/client.css' />
-
-	</head>
-	<body>
-		<input id="m" type='text'>
-		<button onClick="javascript:send()">Fire!</button>
 		<script src='/socket.io/socket.io.js'></script>
-		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<script>
 		var socket = io();
+		var room;
+		var color;
 		socket.on('connect', function(){
 			console.log('connesso');
 		});
@@ -21,9 +20,36 @@
 		socket.on('troppe_conn', function(){
 			console.log('troppe connessioni');
 		});
-		var send = function(){
+		socket.on('conn_riuscita', function(msg){
+			room = msg.room;
+			color = msg.color;
+			$('#login').hide();
+			$('#game').show();
+			$('#game > button').css('background-color', msg.color);
+		});
+		socket.on('via', function(){
+			$('#game > button').prop('disabled', false);
+		});
+		var unisciti = function(){
 			socket.emit('unisciti', $('#m').val());
 		};
+		var fuoco = function(){
+			$('#game > button').prop('disabled', true);
+			socket.emit('fuoco', {room: room, color: color});
+		}
 		</script>
+	</head>
+	<body>
+		<div id="table">
+			<div id="table-cell">
+				<div id="login">
+					<input id="m" type='text'>
+					<button onClick="javascript:unisciti()">Connettiti</button>
+				</div>
+				<div id="game">
+					<button onClick="javascript:fuoco()" disabled>Fire!</button>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

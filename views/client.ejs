@@ -2,42 +2,14 @@
 <html>
 	<head>
 		<title>Socket Games</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<link rel='stylesheet' href='/stylesheets/style.css' />
 		<link rel='stylesheet' href='/stylesheets/client.css' />
 		<script src='/socket.io/socket.io.js'></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-		<script>
-		var socket = io();
-		var room;
-		var color;
-		socket.on('connect', function(){
-			console.log('connesso');
-		});
-		socket.on('disconnect', function(){
-			console.log('disconnesso');
-		});
-		socket.on('troppe_conn', function(){
-			console.log('troppe connessioni');
-		});
-		socket.on('conn_riuscita', function(msg){
-			room = msg.room;
-			color = msg.color;
-			$('#login').hide();
-			$('#game').show();
-			$('#game > button').css('background-color', msg.color);
-		});
-		socket.on('via', function(){
-			$('#game > button').prop('disabled', false);
-		});
-		var unisciti = function(){
-			socket.emit('unisciti', $('#m').val());
-		};
-		var fuoco = function(){
-			$('#game > button').prop('disabled', true);
-			socket.emit('fuoco', {room: room, color: color});
-		}
-		</script>
+		<script src="/javascripts/clientConnect.js"></script>
+		<script src="/javascripts/<%= gameScript %>"></script>
 	</head>
 	<body>
 		<div id="table">

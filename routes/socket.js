@@ -65,6 +65,12 @@ module.exports = function(io){
 			io.to(room).emit('fuoco', color);
 			console.log('Fuoco emesso da ' + color + ' nella room ' + room);
 		});
+		socket.on('step', function(info){
+			var room = info.room;
+			var color = info.color;
+			io.to(room).emit('step', color);
+			console.log('Passo fatto da ' + color + ' nella room ' + room);
+		});
 	});
 
 	return router;
